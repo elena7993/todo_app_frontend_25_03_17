@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import Header from "../componenets/Header";
 
 const Home = () => {
   return (
@@ -10,7 +11,7 @@ const Home = () => {
       minH={"100vh"}
       h={"100%"}
     >
-      Box
+      <Header />
     </Box>
   );
 };
