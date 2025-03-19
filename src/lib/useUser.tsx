@@ -1,17 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "../api";
+import { IUser } from "../types";
 
 const useUser = () => {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError } = useQuery<IUser>({
     queryKey: ["me"],
     queryFn: getMe,
   });
 
-  console.log(data);
-  console.log(isLoading);
-  console.log(isError);
+  // console.log(data);
+  // console.log(isLoading);
+  // console.log(isError);
 
-  return;
+  return {
+    user: data,
+    isLoading,
+    isLoggedIn: !isError,
+  };
 };
 
 export default useUser;
