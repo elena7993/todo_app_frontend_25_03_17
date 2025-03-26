@@ -2,7 +2,7 @@
 
 ### User
 
-- [] signup
+- [] signup (회원가입 ui, 기능 구현)
 - [] login (로그인 ui만들기)
 - [x] logout
 - [x] me
