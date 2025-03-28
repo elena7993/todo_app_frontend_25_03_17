@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookie from "js-cookie";
-import { ILogin } from "./types";
+import { ILogin, ISignUp } from "./types";
 import { log } from "console";
 
 const instance = axios.create({
@@ -22,6 +22,16 @@ export const userLogin = (data: ILogin) => {
   console.log(data);
   return instance
     .post("users/login/", data, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
+};
+
+export const userSignUp = (data: ISignUp) => {
+  return instance
+    .post("users/signup/", data, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },

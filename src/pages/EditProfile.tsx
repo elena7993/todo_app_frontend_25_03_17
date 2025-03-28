@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import useUser from "../lib/useUser";
 
 const EditProfile = () => {
+  const CameraIcon = FaCamera as unknown as React.FC;
   const { user } = useUser();
   const {
     register,
@@ -59,7 +60,7 @@ const EditProfile = () => {
                 p={"5px"}
                 boxShadow={"md"}
               >
-                <FaCamera />
+                <CameraIcon />
               </Box>
             </FormLabel>
           </Box>

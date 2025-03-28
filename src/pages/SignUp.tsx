@@ -1,23 +1,20 @@
 import {
   Box,
   Button,
-  Image,
   Input,
   InputGroup,
   InputRightElement,
   Text,
-  useToast,
+  Toast,
 } from "@chakra-ui/react";
-import livingDead from "../imgs/living-dead.png";
-
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { ILogin } from "../types";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { userLogin } from "../api";
 import { Link, useNavigate } from "react-router-dom";
+import { ISignUp } from "../types";
+import { userSignUp } from "../api";
 
-const Login = () => {
+const SignUp = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
   const nav = useNavigate();
@@ -28,16 +25,14 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<ILogin>();
-
-  const toast = useToast();
+  } = useForm<ISignUp>();
 
   const mutation = useMutation({
-    mutationFn: userLogin,
+    mutationFn: userSignUp,
     onSuccess: () => {
-      toast({
-        title: "로그인",
-        description: "로그인 하였습니다.",
+      Toast({
+        title: "회원가입",
+        description: "회원가입 되었습니다.",
         status: "success",
       });
       queryClient.refetchQueries({
@@ -46,22 +41,22 @@ const Login = () => {
       nav("/");
     },
     onError: () => {
-      toast({
+      Toast({
         title: "에러",
-        description: "로그인에 실패 하였습니다.",
+        description: "회원가입에 실패 하였습니다.",
         status: "error",
       });
     },
   });
 
-  const onLogSubmit = (data: ILogin) => {
+  const onSignUpSubmit = (data: ISignUp) => {
     console.log(data);
     mutation.mutate(data);
   };
 
   return (
     <Box
-      onSubmit={handleSubmit(onLogSubmit)}
+      onSubmit={handleSubmit(onSignUpSubmit)}
       maxW={"450px"}
       w={"100%"}
       margin={"0 auto"}
@@ -75,16 +70,15 @@ const Login = () => {
       gap={"70px"}
     >
       <Text fontSize={"55px"} fontWeight={"bold"}>
-        Login
+        SignUp
       </Text>
-
-      <Image w={"35%"} h={"35%"} src={livingDead}></Image>
 
       <Box
         as="form"
         display={"flex"}
         flexDirection={"column"}
         justifyItems={"center"}
+        padding={"0 40px"}
       >
         <Box marginBottom={"30px"}>
           <Input
@@ -92,10 +86,32 @@ const Login = () => {
               required: "아이디는 필수입니다",
             })}
             placeholder="Enter ID"
-            marginBottom={"10px"}
+            marginBottom={"20px"}
           ></Input>
 
-          <InputGroup size="md">
+          {errors.username?.message}
+
+          <Input
+            {...register("name", {
+              required: "유저네임은 필수입니다",
+            })}
+            placeholder="Enter Name"
+            marginBottom={"20px"}
+          ></Input>
+
+          {errors.name?.message}
+
+          <Input
+            {...register("email", {
+              required: "이메일은 필수입니다",
+            })}
+            placeholder="Enter Email"
+            marginBottom={"20px"}
+          ></Input>
+
+          {errors.email?.message}
+
+          <InputGroup size="md" marginBottom={"10px"}>
             <Input
               {...register("password", {
                 required: "패스워드는 필수입니다",
@@ -104,7 +120,8 @@ const Login = () => {
               type={show ? "text" : "password"}
               placeholder="Enter password"
             />
-            {errors.username?.message}
+
+            {errors.password?.message}
 
             <InputRightElement width="4.5rem">
               <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -119,15 +136,15 @@ const Login = () => {
           color={"#fff"}
           colorScheme={"green"}
         >
-          Login
+          Sign Up
         </Button>
-        <Link to={"/signup"}>
+        <Link to={"/login"}>
           <Text
             marginTop={"5px"}
             fontSize={"14px"}
             _hover={{ textDecoration: "underline", cursor: "pointer" }}
           >
-            Click here for Sign up
+            Click here for Login
           </Text>
         </Link>
       </Box>
@@ -135,4 +152,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default SignUp;
