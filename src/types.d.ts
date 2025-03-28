@@ -15,3 +15,19 @@ export interface ISignUp {
   name: string;
   password: string;
 }
+
+export interface ITodos {
+  id: number;
+  created_at: string;
+  updated_at: string;
+  title: string;
+  payload: string;
+  date: string;
+}
+
+export interface ITodoEditVaild {
+  id: number;
+  title: string;
+  payload: string;
+  date: string;
+}
