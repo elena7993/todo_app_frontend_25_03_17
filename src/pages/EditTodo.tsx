@@ -1,15 +1,21 @@
-import { Box, Button, Input, Text, Textarea } from "@chakra-ui/react";
+import { Box, Button, Input, Text, Textarea, useToast } from "@chakra-ui/react";
 import Header from "../componenets/Header";
 import Container from "../componenets/Container";
-import { useLocation, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ITodoEditVaild, ITodos } from "../types";
-import { getTodoDetail } from "../api";
+import { editTodo, getTodoDetail } from "../api";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import dayjs from "dayjs";
 
 const EditTodo = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const { data, isLoading } = useQuery<ITodos>({
@@ -43,8 +49,38 @@ const EditTodo = () => {
     }
   }, [data, setValue, year, month, day]);
 
+  const toast = useToast();
+
+  const mutation = useMutation({
+    mutationFn: editTodo,
+    onSuccess: () => {
+      toast({
+        title: "수정",
+        description: "수정하였습니다",
+        status: "success",
+      });
+      navigate(`/detail/${id}`);
+    },
+    onError: () => {
+      toast({
+        title: "에러",
+        description: "수정 할 수 없습니다",
+        status: "error",
+      });
+    },
+  });
+
+  console.log(typeof id);
+
   const onSubmit = (data: ITodoEditVaild) => {
-    console.log(data);
+    // console.log(data);
+    const { date, payload, title } = data;
+    mutation.mutate({
+      id: Number(id),
+      date,
+      payload,
+      title,
+    });
   };
 
   return (
@@ -81,6 +117,7 @@ const EditTodo = () => {
             mt={5}
             type="date"
           />
+
           <Button mt={5} type="submit">
             수정하기
           </Button>

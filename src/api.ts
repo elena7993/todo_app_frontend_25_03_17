@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookie from "js-cookie";
-import { ILogin, ISignUp } from "./types";
+import { ILogin, ISignUp, ITodoEditVaild } from "./types";
 import { log } from "console";
 import { QueryFunctionContext } from "@tanstack/react-query";
 
@@ -47,13 +47,30 @@ export const getTodoDetail = ({ queryKey }: QueryFunctionContext) => {
   return instance.get(`todos/${id}`).then((res) => res.data);
 };
 
-export const editTodo = (value: any) => {
+export const editTodo = (value: ITodoEditVaild) => {
   console.log(value);
   return instance
-    .put(`todos/${1}`, value, {
+    .put(`todos/${value.id}`, value, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
     })
     .then((res) => res.data);
 };
+
+interface IDeleteTodoVariable {
+  id: number;
+}
+
+export const deleteTodo = ({ id }: IDeleteTodoVariable) => {
+  console.log(id);
+  return instance
+    .delete(`todos/${id}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
+};
+
+// {id}로 넘기는 것과, id를 바로 넘기는 것은 차이가 있는데,
