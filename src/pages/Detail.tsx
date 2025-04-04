@@ -3,7 +3,7 @@ import Header from "../componenets/Header";
 import Container from "../componenets/Container";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { ITodoEditVaild, ITodos } from "../types";
+import { ITodos } from "../types";
 import { deleteTodo, getTodoDetail } from "../api";
 
 const Detail = () => {
