@@ -22,7 +22,7 @@ const ChangePassword = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm<IChangePassword>();
 
   const mutation = useMutation({
     mutationFn: changePassword,

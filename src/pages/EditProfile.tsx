@@ -48,8 +48,8 @@ const EditProfile = () => {
     },
     onError: () => {
       toast({
-        title: "오류 발생",
-        description: "변경할 수 없습니다 😢",
+        title: "오류",
+        description: "변경할 수 없습니다!",
         status: "error",
       });
     },

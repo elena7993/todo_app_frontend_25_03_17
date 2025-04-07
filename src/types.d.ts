@@ -38,5 +38,6 @@ export interface IEditProfile {
 }
 
 export interface IChangePassword {
-  password: string;
+  current_password: string;
+  new_password: string;
 }
