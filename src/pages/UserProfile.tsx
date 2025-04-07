@@ -66,7 +66,7 @@ const UserProfile = () => {
                 {/* <IoLockClosedSharp /> */}
               </Box>
               <Text mt={"4px"} ml={"5px"} fontSize={"16px"} color={"gray.600"}>
-                <Link to={"change-password/"}>비밀번호 변경</Link>
+                <Link to={"/profile/changepassword/"}>비밀번호 변경</Link>
               </Text>
             </Tag>
             <Box>{/* <IoIosArrowForward /> */}</Box>

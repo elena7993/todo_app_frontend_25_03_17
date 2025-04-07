@@ -1,6 +1,13 @@
 import axios from "axios";
 import Cookie from "js-cookie";
-import { ILogin, ISignUp, ITodoEditVaild } from "./types";
+import {
+  IChangePassword,
+  IEditProfile,
+  ILogin,
+  ISignUp,
+  ITodoEditVaild,
+  IUser,
+} from "./types";
 import { log } from "console";
 import { QueryFunctionContext } from "@tanstack/react-query";
 
@@ -66,6 +73,26 @@ export const deleteTodo = ({ id }: IDeleteTodoVariable) => {
   console.log(id);
   return instance
     .delete(`todos/${id}`, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
+};
+
+export const editProfile = (data: IEditProfile) => {
+  return instance
+    .put("users/me/", data, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
+};
+
+export const changePassword = (data: IChangePassword) => {
+  return instance
+    .put("users/changepassword/", data, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },

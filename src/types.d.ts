@@ -31,3 +31,12 @@ export interface ITodoEditVaild {
   payload: string;
   date: string;
 }
+
+export interface IEditProfile {
+  name: string;
+  email: string;
+}
+
+export interface IChangePassword {
+  password: string;
+}

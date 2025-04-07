@@ -5,6 +5,7 @@ import {
   FormControl,
   FormLabel,
   Input,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
 import { FaCamera } from "react-icons/fa";
@@ -12,21 +13,56 @@ import Header from "../componenets/Header";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import useUser from "../lib/useUser";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { editProfile } from "../api";
+import { IEditProfile, IUser } from "../types";
 
 const EditProfile = () => {
   const CameraIcon = FaCamera as unknown as React.FC;
   const { user } = useUser();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
     setValue,
-  } = useForm();
+  } = useForm<IEditProfile>();
 
   useEffect(() => {
-    setValue("name", user?.name);
-    setValue("email", user?.email);
+    setValue("name", user?.name || "");
+    setValue("email", user?.email || "");
   }, [user, setValue]);
+
+  const toast = useToast();
+
+  const mutation = useMutation({
+    mutationFn: editProfile,
+    onSuccess: () => {
+      toast({
+        title: "프로필 수정 완료",
+        description: "성공적으로 변경되었습니다!",
+        status: "success",
+      });
+      navigate("/profile");
+    },
+    onError: () => {
+      toast({
+        title: "오류 발생",
+        description: "변경할 수 없습니다 😢",
+        status: "error",
+      });
+    },
+  });
+
+  const onSubmit = (data: IEditProfile) => {
+    console.log(data);
+    const { name, email } = data;
+    mutation.mutate({
+      name,
+      email,
+    });
+  };
 
   return (
     <Box
@@ -39,7 +75,7 @@ const EditProfile = () => {
     >
       <Header />
       <Box mt={"30px"}>
-        <VStack as="form" p={"15px"}>
+        <VStack as="form" onSubmit={handleSubmit(onSubmit)} p={"15px"}>
           <Input
             accept="image/*"
             type="file"
