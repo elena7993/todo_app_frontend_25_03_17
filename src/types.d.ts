@@ -41,3 +41,9 @@ export interface IChangePassword {
   current_password: string;
   new_password: string;
 }
+
+export interface ICreateTodo {
+  title: string;
+  payload: string;
+  date: string;
+}

@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookie from "js-cookie";
 import {
   IChangePassword,
+  ICreateTodo,
   IEditProfile,
   ILogin,
   ISignUp,
@@ -93,6 +94,16 @@ export const editProfile = (data: IEditProfile) => {
 export const changePassword = (data: IChangePassword) => {
   return instance
     .put("users/changepassword/", data, {
+      headers: {
+        "X-CSRFToken": Cookie.get("csrftoken") || "",
+      },
+    })
+    .then((res) => res.data);
+};
+
+export const createTodo = (data: ICreateTodo) => {
+  return instance
+    .post("todos/", data, {
       headers: {
         "X-CSRFToken": Cookie.get("csrftoken") || "",
       },
